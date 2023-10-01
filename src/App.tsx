@@ -1,3 +1,4 @@
+import pizzas from './assets/pizzas.json'
 import Categories from './components/Categories'
 import Header from './components/Header'
 import PizzaBlock from './components/PizzaBlock'
@@ -16,22 +17,12 @@ function App() {
 					</div>
 					<h2 className='content__title'>Все пиццы</h2>
 					<div className='content__items'>
-						<PizzaBlock
-							title={'Мексиканская'}
-							price={400}
-						/>
-						<PizzaBlock
-							title={'Чизбургер-пицца'}
-							price={300}
-						/>
-						<PizzaBlock
-							title={'Пеппероне'}
-							price={450}
-						/>
-						<PizzaBlock
-							title={'Четыре сыра'}
-							price={380}
-						/>
+						{pizzas.map(item => (
+							<PizzaBlock
+								key={item.id}
+								{...item}
+							/>
+						))}
 					</div>
 				</div>
 			</div>
