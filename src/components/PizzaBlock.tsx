@@ -19,7 +19,7 @@ const PizzaBlock: FC<IPizza> = ({ title, price, imageUrl, types, sizes }) => {
 				<ul>
 					{types.map((t, i) => (
 						<li
-							key={i}
+							key={t}
 							onClick={() => setActiveType(i)}
 							className={activeType === i ? 'active' : ''}
 						>
@@ -30,7 +30,7 @@ const PizzaBlock: FC<IPizza> = ({ title, price, imageUrl, types, sizes }) => {
 				<ul>
 					{sizes.map((s, i) => (
 						<li
-							key={i}
+							key={s}
 							onClick={() => setActiveSize(i)}
 							className={activeSize === i ? 'active' : ''}
 						>
