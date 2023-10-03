@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { IPizza } from '../types/types'
+import { IPizza } from '../../types/types'
 
 const typeNames = ['тонкое', 'традиционное']
 
