@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { Dispatch, FC, SetStateAction } from 'react'
 
 const categories = [
 	'Все',
@@ -8,18 +8,20 @@ const categories = [
 	'Острые',
 	'Закрытые'
 ]
+interface CategoriesProps {
+	value: number
+	onClickCategory: Dispatch<SetStateAction<number>>
+}
 
-const Categories: FC = () => {
-	const [activeCategory, setActiveCategory] = useState(0)
-
+const Categories: FC<CategoriesProps> = ({ value, onClickCategory }) => {
 	return (
 		<div className='categories'>
 			<ul>
 				{categories.map((item, idx) => (
 					<li
 						key={idx}
-						onClick={() => setActiveCategory(idx)}
-						className={activeCategory === idx ? 'active' : ''}
+						onClick={() => onClickCategory(idx)}
+						className={value === idx ? 'active' : ''}
 					>
 						{item}
 					</li>
