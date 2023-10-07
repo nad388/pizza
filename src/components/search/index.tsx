@@ -1,4 +1,5 @@
-import { FC } from 'react'
+import { FC, useContext } from 'react'
+import { SearchContext } from '../../App'
 import styles from './Search.module.scss'
 
 // interface SearchProps {
@@ -6,7 +7,8 @@ import styles from './Search.module.scss'
 // 	setSearchValue: Dispatch<SetStateAction<number>>
 // }
 
-const Search: FC = ({ searchValue, setSearchValue }) => {
+const Search: FC = () => {
+	const { searchValue, setSearchValue } = useContext<unknown>(SearchContext)
 	const onClickClearInput = () => {
 		setSearchValue('')
 	}

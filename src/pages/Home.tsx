@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useContext, useEffect, useState } from 'react'
+import { SearchContext } from '../App'
 import Categories from '../components/Categories'
 import Sort from '../components/Sort'
 import Pagination from '../components/pagination'
@@ -6,7 +7,8 @@ import PizzaBlock from '../components/pizzaBlock'
 import Sceleton from '../components/pizzaBlock/Sceleton'
 import { IPizza } from '../types/types'
 
-const Home: FC = ({ searchValue }) => {
+const Home: FC = () => {
+	const { searchValue } = useContext<unknown>(SearchContext)
 	const [items, setItems] = useState<IPizza[]>([])
 	const [isLoading, setIsLoading] = useState(true)
 	const [categoryId, setCategoryId] = useState(0)
