@@ -1,8 +1,9 @@
 import { FC } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../assets/img/pizza-logo.svg'
+import Search from './search'
 
-const Header: FC = () => {
+const Header: FC = ({ searchValue, setSearchValue }) => {
 	return (
 		<div className='header'>
 			<div className='container'>
@@ -19,7 +20,10 @@ const Header: FC = () => {
 						</div>
 					</div>
 				</Link>
-
+				<Search
+					searchValue={searchValue}
+					setSearchValue={setSearchValue}
+				/>
 				<div className='header__cart'>
 					<Link
 						to='/cart'

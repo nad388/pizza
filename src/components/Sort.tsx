@@ -11,10 +11,10 @@ const listSort = [
 
 interface SortProps {
 	value: any
-	name: string
-	sortProperty: string
+	name: any
+	sortProperty: any
 
-	onChangeSort: Dispatch<SetStateAction<string>>
+	onChangeSort: Dispatch<SetStateAction<any>>
 }
 
 const Sort: FC<SortProps> = ({ value, onChangeSort }) => {
