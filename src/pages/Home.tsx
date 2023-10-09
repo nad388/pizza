@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { FC, useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { SearchContext } from '../App'
@@ -6,12 +7,14 @@ import Sort from '../components/Sort'
 import Pagination from '../components/pagination'
 import PizzaBlock from '../components/pizzaBlock'
 import Sceleton from '../components/pizzaBlock/Sceleton'
-import { setCategoryId } from '../redux/slices/filterSlice'
+import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice'
 import { RootState } from '../redux/store'
 import { IPizza } from '../types/types'
 
 const Home: FC = () => {
-	const { categoryId, sort } = useSelector((state: RootState) => state.filter)
+	const { categoryId, sort, currentPage } = useSelector(
+		(state: RootState) => state.filter
+	)
 	const sortType = sort.sortProperty
 
 	const dispatch = useDispatch()
@@ -19,28 +22,32 @@ const Home: FC = () => {
 	const { searchValue } = useContext<unknown>(SearchContext)
 	const [items, setItems] = useState<IPizza[]>([])
 	const [isLoading, setIsLoading] = useState(true)
-	const [currentPage, setCurrentPage] = useState(1)
 
 	const onChangeCategory = (idx: number) => {
 		dispatch(setCategoryId(idx))
 	}
 
+	const onChangePage = (number: number) => {
+		dispatch(setCurrentPage(number))
+	}
+
 	useEffect(() => {
+		setIsLoading(true)
+
 		const order = sortType.includes('-') ? 'asc' : 'desc'
 		const sortBy = sortType.replace('-', '')
 		const category = categoryId > 0 ? `category=${categoryId}` : ''
 		const search = searchValue ? `&search=${searchValue}` : ''
 
-		const fetchData = async () => {
-			setIsLoading(true)
-			const data = await fetch(
+		axios
+			.get(
 				`https://651b10b7194f77f2a5ae311c.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
 			)
-			const json = await data.json()
-			setIsLoading(false)
-			return setItems(json)
-		}
-		fetchData()
+			.then(res => {
+				setItems(res.data)
+				setIsLoading(false)
+			})
+
 		window.scrollTo(0, 0)
 	}, [categoryId, sortType, searchValue, currentPage])
 
@@ -68,7 +75,10 @@ const Home: FC = () => {
 			</div>
 			<h2 className='content__title'>Все пиццы</h2>
 			<div className='content__items'>{isLoading ? sceletons : pizzas}</div>
-			<Pagination onChangePage={number => setCurrentPage(number)} />
+			<Pagination
+				currentPage={currentPage}
+				onChangePage={onChangePage}
+			/>
 		</div>
 	)
 }
