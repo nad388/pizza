@@ -1,4 +1,7 @@
 import { Dispatch, FC, SetStateAction, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSort } from '../redux/slices/filterSlice'
+import { RootState } from '../redux/store'
 
 const listSort = [
 	{ name: 'популярности (DESC)', sortProperty: 'rating' },
@@ -17,11 +20,14 @@ interface SortProps {
 	onChangeSort: Dispatch<SetStateAction<any>>
 }
 
-const Sort: FC<SortProps> = ({ value, onChangeSort }) => {
+const Sort: FC<SortProps> = () => {
+	const dispatch = useDispatch()
+	const sort = useSelector((state: RootState) => state.filter.sort)
+
 	const [open, setOpen] = useState(false)
 
-	const onClickListItem = (i: string) => {
-		onChangeSort(i)
+	const onClickListItem = (obj: Object) => {
+		dispatch(setSort(obj))
 		setOpen(false)
 	}
 
@@ -41,7 +47,7 @@ const Sort: FC<SortProps> = ({ value, onChangeSort }) => {
 					/>
 				</svg>
 				<b>Сортировка по:</b>
-				<span onClick={() => setOpen(!open)}>{value.name}</span>
+				<span onClick={() => setOpen(!open)}>{sort.name}</span>
 			</div>
 			{open && (
 				<div className='sort__popup'>
@@ -49,9 +55,7 @@ const Sort: FC<SortProps> = ({ value, onChangeSort }) => {
 						{listSort.map((l: any, i) => (
 							<li
 								key={i}
-								className={
-									value.sortProperty === l.sortProperty ? 'active' : ''
-								}
+								className={sort.sortProperty === l.sortProperty ? 'active' : ''}
 								onClick={() => onClickListItem(l)}
 							>
 								{l.name}

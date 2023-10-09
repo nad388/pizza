@@ -1,26 +1,33 @@
 import { FC, useContext, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { SearchContext } from '../App'
 import Categories from '../components/Categories'
 import Sort from '../components/Sort'
 import Pagination from '../components/pagination'
 import PizzaBlock from '../components/pizzaBlock'
 import Sceleton from '../components/pizzaBlock/Sceleton'
+import { setCategoryId } from '../redux/slices/filterSlice'
+import { RootState } from '../redux/store'
 import { IPizza } from '../types/types'
 
 const Home: FC = () => {
+	const { categoryId, sort } = useSelector((state: RootState) => state.filter)
+	const sortType = sort.sortProperty
+
+	const dispatch = useDispatch()
+
 	const { searchValue } = useContext<unknown>(SearchContext)
 	const [items, setItems] = useState<IPizza[]>([])
 	const [isLoading, setIsLoading] = useState(true)
-	const [categoryId, setCategoryId] = useState(0)
 	const [currentPage, setCurrentPage] = useState(1)
-	const [sortType, setSortType] = useState({
-		name: 'популярности',
-		sortProperty: 'rating'
-	})
+
+	const onChangeCategory = (idx: number) => {
+		dispatch(setCategoryId(idx))
+	}
 
 	useEffect(() => {
-		const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc'
-		const sortBy = sortType.sortProperty.replace('-', '')
+		const order = sortType.includes('-') ? 'asc' : 'desc'
+		const sortBy = sortType.replace('-', '')
 		const category = categoryId > 0 ? `category=${categoryId}` : ''
 		const search = searchValue ? `&search=${searchValue}` : ''
 
@@ -55,12 +62,9 @@ const Home: FC = () => {
 			<div className='content__top'>
 				<Categories
 					value={categoryId}
-					onClickCategory={idx => setCategoryId(idx)}
+					onClickCategory={onChangeCategory}
 				/>
-				<Sort
-					value={sortType}
-					onChangeSort={idx => setSortType(idx)}
-				/>
+				<Sort />
 			</div>
 			<h2 className='content__title'>Все пиццы</h2>
 			<div className='content__items'>{isLoading ? sceletons : pizzas}</div>
