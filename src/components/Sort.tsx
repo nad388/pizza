@@ -1,4 +1,11 @@
-import { Dispatch, FC, SetStateAction, useState } from 'react'
+import {
+	Dispatch,
+	FC,
+	SetStateAction,
+	useEffect,
+	useRef,
+	useState
+} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSort } from '../redux/slices/filterSlice'
 import { RootState } from '../redux/store'
@@ -16,12 +23,12 @@ interface SortProps {
 	value: any
 	name: any
 	sortProperty: any
-
 	onChangeSort: Dispatch<SetStateAction<any>>
 }
 
 const Sort: FC<SortProps> = () => {
 	const dispatch = useDispatch()
+	const sortRef = useRef()
 	const sort = useSelector((state: RootState) => state.filter.sort)
 
 	const [open, setOpen] = useState(false)
@@ -30,9 +37,31 @@ const Sort: FC<SortProps> = () => {
 		dispatch(setSort(obj))
 		setOpen(false)
 	}
+	useEffect(() => {
+		const handleClickOutside = (event: any) => {
+			let target = event.target
+			let isSortRef = false
+
+			while (target) {
+				if (target === sortRef.current) {
+					isSortRef = true
+					break
+				}
+				target = target.parentElement
+			}
+			if (!isSortRef) {
+				setOpen(false)
+			}
+		}
+		document.body.addEventListener('click', handleClickOutside)
+		return () => document.body.removeEventListener('click', handleClickOutside)
+	}, [])
 
 	return (
-		<div className='sort'>
+		<div
+			ref={sortRef}
+			className='sort'
+		>
 			<div className='sort__label'>
 				<svg
 					width='10'
