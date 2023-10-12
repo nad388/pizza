@@ -1,7 +1,7 @@
 import qs from 'qs'
 import { FC, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Categories from '../components/Categories'
 import Sort, { listSort } from '../components/Sort'
 import Pagination from '../components/pagination'
@@ -86,16 +86,14 @@ const Home: FC = () => {
 		getPizzas()
 	}, [categoryId, sortType, searchValue, currentPage])
 
-	const pizzas = items
-		// .filter(item => {
-		// 	return item.title.toLowerCase().includes(searchValue.toLowerCase())
-		// })
-		.map(item => (
-			<PizzaBlock
-				key={item.id}
-				{...item}
-			/>
-		))
+	const pizzas = items.map((item: any) => (
+		<Link
+			key={item.id}
+			to={`/pizza/${item.id}`}
+		>
+			<PizzaBlock {...item} />
+		</Link>
+	))
 
 	const sceletons = [...new Array(6)].map((_, idx) => <Sceleton key={idx} />)
 
