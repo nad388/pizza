@@ -12,16 +12,16 @@ import styles from './Search.module.scss'
 const Search: FC = () => {
 	const dispatch = useDispatch()
 	const [value, setValue] = useState('')
-	const inputEl = useRef<any | undefined>()
+	const inputEl = useRef<HTMLInputElement>(null)
 
 	const onClickClearInput = () => {
 		dispatch(setSearchValue(''))
 		setValue('')
-		inputEl.current.focus()
+		inputEl.current?.focus()
 	}
 
 	const updateSearchValue = useCallback(
-		debounce(str => {
+		debounce((str: string) => {
 			dispatch(setSearchValue(str))
 		}, 250),
 		[]

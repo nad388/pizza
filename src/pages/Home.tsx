@@ -42,6 +42,7 @@ const Home: FC = () => {
 		const search = searchValue ? `&search=${searchValue}` : ''
 
 		dispatch(
+			// @ts-ignore
 			fetchPizzas({
 				order,
 				sortBy,

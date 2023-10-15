@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { FC, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { IPizza } from '../types/types'
 
 const FullPizza: FC = () => {
-	const [pizza, setPizza] = useState<any>()
+	const [pizza, setPizza] = useState<IPizza>()
 	const { id } = useParams()
 	const navigate = useNavigate()
 

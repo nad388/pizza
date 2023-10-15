@@ -1,15 +1,13 @@
-import {
-	Dispatch,
-	FC,
-	SetStateAction,
-	useEffect,
-	useRef,
-	useState
-} from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectSort, setSort } from '../redux/slices/filterSlice'
 
-export const listSort = [
+type SortItem = {
+	name: string
+	sortProperty: string
+}
+
+export const listSort: SortItem[] = [
 	{ name: 'популярности (DESC)', sortProperty: 'rating' },
 	{ name: 'популярности (ASC)', sortProperty: '-rating' },
 	{ name: 'цене (DESC)', sortProperty: 'price' },
@@ -18,21 +16,14 @@ export const listSort = [
 	{ name: 'алфавиту (ASC)', sortProperty: '-title' }
 ]
 
-interface SortProps {
-	value: any
-	name: any
-	sortProperty: any
-	onChangeSort: Dispatch<SetStateAction<any>>
-}
-
-const Sort: FC<SortProps> = () => {
+const Sort: FC = () => {
 	const dispatch = useDispatch()
-	const sortRef = useRef()
+	const sortRef = useRef<HTMLDivElement>(null)
 	const sort = useSelector(selectSort)
 
 	const [open, setOpen] = useState(false)
 
-	const onClickListItem = (obj: Object) => {
+	const onClickListItem = (obj: SortItem) => {
 		dispatch(setSort(obj))
 		setOpen(false)
 	}

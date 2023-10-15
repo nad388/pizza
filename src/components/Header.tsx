@@ -7,7 +7,10 @@ import Search from './search'
 
 const Header: FC = () => {
 	const { items, totalPrice } = useSelector(selectCart)
-	const totalCount = items.reduce((sum: any, item: any) => sum + item.count, 0)
+	const totalCount = items.reduce(
+		(sum: number, item: any) => sum + item.count,
+		0
+	)
 	return (
 		<div className='header'>
 			<div className='container'>
