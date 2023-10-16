@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, MouseEvent, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectSort, setSort } from '../redux/slices/filterSlice'
 
@@ -28,8 +28,8 @@ const Sort: FC = () => {
 		setOpen(false)
 	}
 	useEffect(() => {
-		const handleClickOutside = (event: any) => {
-			let target = event.target
+		const handleClickOutside = (event: MouseEvent) => {
+			let target = event.target as HTMLElement | null
 			let isSortRef = false
 
 			while (target) {

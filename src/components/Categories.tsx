@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction } from 'react'
+import { FC } from 'react'
 
 const categories = [
 	'Все',
@@ -10,7 +10,7 @@ const categories = [
 ]
 interface CategoriesProps {
 	value: number
-	onClickCategory: Dispatch<SetStateAction<number>>
+	onClickCategory: (idx: number) => void
 }
 
 const Categories: FC<CategoriesProps> = ({ value, onClickCategory }) => {
