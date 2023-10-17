@@ -1,6 +1,6 @@
 import qs from 'qs'
 import { FC, useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Categories from '../components/Categories'
 import Sort, { listSort } from '../components/Sort'
@@ -14,10 +14,11 @@ import {
 	setFilters
 } from '../redux/slices/filterSlice'
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice'
+import { useAppDispatch } from '../redux/store'
 
 const Home: FC = () => {
 	const navigate = useNavigate()
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	const isSearch = useRef(false)
 	const isMounted = useRef(false)
 
@@ -42,13 +43,12 @@ const Home: FC = () => {
 		const search = searchValue ? `&search=${searchValue}` : ''
 
 		dispatch(
-			// @ts-ignore
 			fetchPizzas({
 				order,
 				sortBy,
 				category,
 				search,
-				currentPage
+				currentPage: String(currentPage)
 			})
 		)
 		window.scrollTo(0, 0)

@@ -23,7 +23,7 @@ const CartItem: FC<CartItemProps> = ({
 }) => {
 	const dispatch = useDispatch()
 	const onClickPlus = () => {
-		dispatch(addItem({ id }))
+		dispatch(addItem(id))
 	}
 	const onClickMinus = () => {
 		dispatch(minusItem(id))
