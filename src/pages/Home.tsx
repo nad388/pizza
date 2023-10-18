@@ -1,17 +1,15 @@
-import qs from 'qs'
 import { FC, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Categories from '../components/Categories'
-import Sort, { listSort } from '../components/Sort'
+import Sort from '../components/Sort'
 import Pagination from '../components/pagination'
 import PizzaBlock from '../components/pizzaBlock'
 import Sceleton from '../components/pizzaBlock/Sceleton'
 import {
 	selectFilter,
 	setCategoryId,
-	setCurrentPage,
-	setFilters
+	setCurrentPage
 } from '../redux/slices/filterSlice'
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice'
 import { useAppDispatch } from '../redux/store'
@@ -53,48 +51,43 @@ const Home: FC = () => {
 		)
 		window.scrollTo(0, 0)
 	}
-	useEffect(() => {
-		if (isMounted.current) {
-			const queryString = qs.stringify({
-				sortProperty: sort.sortProperty,
-				categoryId,
-				currentPage
-			})
-			navigate(`?${queryString}`)
-		}
-		isMounted.current = true
-	}, [categoryId, sort.sortProperty, currentPage])
+	// useEffect(() => {
+	// 	if (isMounted.current) {
+	// 		const queryString = qs.stringify({
+	// 			sortProperty: sort.sortProperty,
+	// 			categoryId,
+	// 			currentPage
+	// 		})
+	// 		navigate(`?${queryString}`)
+	// 	}
+	// 	isMounted.current = true
+	// }, [categoryId, sort.sortProperty, currentPage])
 
-	useEffect(() => {
-		if (window.location.search) {
-			const params = qs.parse(window.location.search.substring(1))
+	// useEffect(() => {
+	// 	if (window.location.search) {
+	// 		const params = qs.parse(
+	// 			window.location.search.substring(1)
+	// 		) as unknown as SearchPizzaParams
 
-			const sort = listSort.find(
-				obj => obj.sortProperty === params.sortProperty
-			)
+	// 		const sort = listSort.find(obj => obj.sortProperty === params.sortBy)
 
-			dispatch(
-				setFilters({
-					...params,
-					sort
-				})
-			)
-			isSearch.current = true
-		}
-	}, [])
+	// 		dispatch(
+	// 			setFilters({
+	// 				searchValue: params.search,
+	// 				categoryId: +params.category,
+	// 				currentPage: +params.currentPage,
+	// 				sort: sort || listSort[0]
+	// 			})
+	// 		)
+	// 		isSearch.current = true
+	// 	}
+	// }, [])
 
 	useEffect(() => {
 		getPizzas()
 	}, [categoryId, sortType, searchValue, currentPage])
 
-	const pizzas = items.map((item: any) => (
-		<Link
-			key={item.id}
-			to={`/pizza/${item.id}`}
-		>
-			<PizzaBlock {...item} />
-		</Link>
-	))
+	const pizzas = items.map((item: any) => <PizzaBlock {...item} />)
 
 	const sceletons = [...new Array(6)].map((_, idx) => <Sceleton key={idx} />)
 

@@ -3,7 +3,15 @@ import axios from 'axios'
 import { IPizza } from '../../types/types'
 import { RootState } from '../store'
 
-export const fetchPizzas = createAsyncThunk<IPizza[], Record<string, string>>(
+export type SearchPizzaParams = {
+	order: string
+	sortBy: string
+	category: string
+	search: string
+	currentPage: string
+}
+
+export const fetchPizzas = createAsyncThunk<IPizza[], SearchPizzaParams>(
 	'pizza/fetchPizzasStatus',
 	async params => {
 		const { order, sortBy, category, search, currentPage } = params
