@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from 'react'
+import { FC, useCallback, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Categories from '../components/Categories'
@@ -26,9 +26,9 @@ const Home: FC = () => {
 
 	const sortType = sort.sortProperty
 
-	const onChangeCategory = (idx: number) => {
+	const onChangeCategory = useCallback((idx: number) => {
 		dispatch(setCategoryId(idx))
-	}
+	}, [])
 
 	const onChangePage = (number: number) => {
 		dispatch(setCurrentPage(number))
@@ -87,7 +87,12 @@ const Home: FC = () => {
 		getPizzas()
 	}, [categoryId, sortType, searchValue, currentPage])
 
-	const pizzas = items.map((item: any) => <PizzaBlock {...item} />)
+	const pizzas = items.map((item: any) => (
+		<PizzaBlock
+			key={item.id}
+			{...item}
+		/>
+	))
 
 	const sceletons = [...new Array(6)].map((_, idx) => <Sceleton key={idx} />)
 
@@ -98,7 +103,7 @@ const Home: FC = () => {
 					value={categoryId}
 					onClickCategory={onChangeCategory}
 				/>
-				<Sort />
+				<Sort value={sort} />
 			</div>
 			<h2 className='content__title'>Все пиццы</h2>
 			{status === 'error' ? (

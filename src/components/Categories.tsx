@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, memo } from 'react'
 
 const categories = [
 	'Все',
@@ -13,7 +13,7 @@ interface CategoriesProps {
 	onClickCategory: (idx: number) => void
 }
 
-const Categories: FC<CategoriesProps> = ({ value, onClickCategory }) => {
+const Categories: FC<CategoriesProps> = memo(({ value, onClickCategory }) => {
 	return (
 		<div className='categories'>
 			<ul>
@@ -29,6 +29,6 @@ const Categories: FC<CategoriesProps> = ({ value, onClickCategory }) => {
 			</ul>
 		</div>
 	)
-}
+})
 
 export default Categories
